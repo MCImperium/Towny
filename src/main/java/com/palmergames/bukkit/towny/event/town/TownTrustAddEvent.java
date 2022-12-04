@@ -1,0 +1,64 @@
+package com.palmergames.bukkit.towny.event.town;
+
+import com.palmergames.bukkit.towny.event.CancellableTownyEvent;
+import com.palmergames.bukkit.towny.object.Resident;
+import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.object.Translation;
+import org.bukkit.command.Player;
+import net.minecraft.world.entity.player.Player;
+import org.bukkit.event.HandlerList;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+public class TownTrustAddEvent extends CancellableTownyEvent {
+	private static final HandlerList HANDLER_LIST = new HandlerList();
+	
+	private final Town town;
+	private final Resident trustedResident;
+	private final Player sender;
+
+	public TownTrustAddEvent(Player sender, Resident trustedResident, Town town) {
+		this.town = town;
+		this.trustedResident = trustedResident;
+		this.sender = sender;
+		setCancelMessage(Translation.of("msg_err_command_disable"));
+	}
+
+	/**
+	 * @return The town where the resident is being added as trusted.
+	 */
+	public Town getTown() {
+		return town;
+	}
+
+	/**
+	 * @return The resident that is being added as trusted.
+	 */
+	public Resident getTrustedResident() {
+		return trustedResident;
+	}
+
+	/**
+	 * @return The player that is adding the resident as trusted.
+	 * @deprecated As of 0.97.5.17, please use {@link #getSender()} instead.
+	 */
+	@Deprecated
+	public @Nullable Player getPlayer() {
+		return sender instanceof Player player ? player : null;
+	}
+	
+	@NotNull
+	public Player getSender() {
+		return sender;
+	}
+
+	public static HandlerList getHandlerList() {
+		return HANDLER_LIST;
+	}
+
+	@NotNull
+	@Override
+	public HandlerList getHandlers() {
+		return HANDLER_LIST;
+	}
+}
